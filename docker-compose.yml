@@ -1,0 +1,28 @@
+services:
+  next-hub-code-server:
+    image: code-space  # Use the custom-built image
+    container_name: code-server
+    hostname: code-server
+    build:
+      context: .  # Build from the local Dockerfile
+      dockerfile: Dockerfile
+    environment:
+      PUID: 1000
+      PGID: 1000
+      TZ: Etc/UTC
+      PASSWORD: "7jl05TxgVKGOn4et"
+      SUDO_PASSWORD: "12131"
+      DEFAULT_WORKSPACE: /workspace
+    volumes:
+      - /home/dev/workspace:/workspace
+      - /home/dev/.config/code-server:/config
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount the Docker socket
+    networks:
+      - frontend
+      - backend
+    security_opt:
+      - no-new-privileges:false  # Allow required privileges
+
+networks:
+  frontend:
+  backend:
